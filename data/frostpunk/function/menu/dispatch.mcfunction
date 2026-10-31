@@ -24,6 +24,10 @@ execute if score @s fp_menu matches 27 run return run function frostpunk:build/d
 execute if score @s fp_menu matches 28 run return run function frostpunk:build/do {type:"guard",name:"Караульная",wood:20,steel:10}
 execute if score @s fp_menu matches 29 run return run function frostpunk:build/do {type:"prayer",name:"Молельный дом",wood:30,steel:10}
 
+# Снос и разведка
+execute if score @s fp_menu matches 40 run return run function frostpunk:demolish/nearest
+execute if score @s fp_menu matches 41 run return run function frostpunk:expedition/send
+
 # Законы
 execute if score @s fp_menu matches 30 run return run function frostpunk:law/soup
 execute if score @s fp_menu matches 31 run return run function frostpunk:law/rations

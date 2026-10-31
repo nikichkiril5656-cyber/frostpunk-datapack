@@ -53,6 +53,8 @@ scoreboard players set #eff fp 100
 scoreboard players set #workers fp 45
 scoreboard players set #hungry fp 0
 scoreboard players set #law_cd fp 0
+scoreboard players set #scout fp 0
+scoreboard players set #scout_men fp 0
 
 # Здания
 scoreboard players set #n_tent fp 0
