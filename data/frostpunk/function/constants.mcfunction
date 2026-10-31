@@ -1,0 +1,16 @@
+scoreboard players set #c0 fp 0
+scoreboard players set #c1 fp 1
+scoreboard players set #c2 fp 2
+scoreboard players set #c3 fp 3
+scoreboard players set #c4 fp 4
+scoreboard players set #c5 fp 5
+scoreboard players set #c10 fp 10
+scoreboard players set #c15 fp 15
+scoreboard players set #c25 fp 25
+scoreboard players set #c30 fp 30
+scoreboard players set #c40 fp 40
+scoreboard players set #c100 fp 100
+scoreboard players set #c10000 fp 10000
+scoreboard players set #cm1 fp -1
+scoreboard players set #cm2 fp -2
+scoreboard players set #cm75 fp -75

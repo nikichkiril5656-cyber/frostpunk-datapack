@@ -1,0 +1,6 @@
+tellraw @s {"text":"══════ FROSTPUNK ══════","color":"gold","bold":true}
+tellraw @s [{"text":"[Состояние города]","color":"aqua","click_event":{"action":"run_command","command":"/trigger fp_menu set 4"},"hover_event":{"action":"show_text","value":"Население, ресурсы, температура, законы"}}]
+tellraw @s [{"text":"[Строительство]","color":"green","click_event":{"action":"run_command","command":"/trigger fp_menu set 2"},"hover_event":{"action":"show_text","value":"Только Капитан. Здание появится в 6 блоках перед вами"}}]
+tellraw @s [{"text":"[Законы]","color":"yellow","click_event":{"action":"run_command","command":"/trigger fp_menu set 3"},"hover_event":{"action":"show_text","value":"Только Капитан. Совет обсуждает законы по 12 часов"}}]
+tellraw @s [{"text":"[Генератор]","color":"red","click_event":{"action":"run_command","command":"/trigger fp_menu set 6"},"hover_event":{"action":"show_text","value":"Уровень нагрева и расход угля"}}]
+tellraw @s [{"text":"[Сдать ресурсы на склад]","color":"light_purple","click_event":{"action":"run_command","command":"/trigger fp_menu set 5"},"hover_event":{"action":"show_text","value":"Уголь, брёвна, доски, железо и еда из инвентаря идут в город. Нужно стоять рядом с генератором"}}]
