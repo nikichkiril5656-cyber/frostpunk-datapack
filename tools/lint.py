@@ -91,18 +91,27 @@ for fid, p in fn_files.items():
         for m in re.finditer(r"\bfunction ([\w.-]+:[\w/.$()-]+)", s):
             target = m.group(1)
             if "$(" in target:
-                if target == "frostpunk:build/place/$(type)":
+                if target.startswith("frostpunk:build/place/$(type)"):
                     for t in build_types:
-                        if f"frostpunk:build/place/{t}" not in fn_ids:
-                            err(f"{where}: нет функции frostpunk:build/place/{t}")
+                        real = target.replace("$(type)", t)
+                        if real not in fn_ids:
+                            err(f"{where}: нет функции {real}")
                 else:
                     err(f"{where}: макро-путь {target} не поддержан линтером")
             elif target not in fn_ids:
                 err(f"{where}: вызывается несуществующая функция {target}")
 
+        # предикаты и теги биомов
+        for m in re.finditer(r"\bif predicate ([\w.-]+):([\w/.-]+)", s):
+            ns, name = m.groups()
+            if ns != "minecraft" and not (ROOT / f"data/{ns}/predicate/{name}.json").exists():
+                err(f"{where}: нет предиката {ns}:{name}")
+        for m in re.finditer(r"\bbiome [~\d. -]+ #([\w.-]+):([\w/.-]+)", s):
+            ns, name = m.groups()
+            if ns != "minecraft" and not (ROOT / f"data/{ns}/tags/worldgen/biome/{name}.json").exists():
+                err(f"{where}: нет тега биомов #{ns}:{name}")
+
         # цели scoreboard
-        for m in re.finditer(r'scoreboard players (?:set|add|remove|operation|enable|get) \S+ (?:\S+ )?(\w+)\b', s):
-            pass  # сложный разбор не нужен: ниже проверяем явные объявления
         for m in re.finditer(r'"objective":"(\w+)"', s):
             if m.group(1) not in objectives:
                 err(f"{where}: цель {m.group(1)} не объявлена в load.mcfunction")
@@ -113,7 +122,7 @@ for fid, p in fn_files.items():
         # fake players
         for m in re.finditer(r"#[A-Za-z_][\w]*", s):
             name = m.group(0)
-            if name.startswith("#minecraft") or s[m.end():m.end() + 2] == "$(":
+            if s[m.end():m.end() + 1] == ":" or s[m.end():m.end() + 2] == "$(":
                 continue
             mentioned.setdefault(name, where)
             mention_count[name] = mention_count.get(name, 0) + 1
@@ -141,6 +150,21 @@ for name, where in sorted(mentioned.items()):
 for name, cnt in sorted(mention_count.items()):
     if cnt == 1 and name in written:
         warn(f"{mentioned[name]}: fake player {name} упомянут один раз (записывается, но не читается — опечатка?)")
+
+# ---------- сгенерированные здания ----------
+import subprocess
+gen = ROOT / "tools/gen_buildings.py"
+if gen.exists():
+    place = ROOT / "data/frostpunk/function/build/place"
+    before = {p: p.read_bytes() for p in place.rglob("*.mcfunction")}
+    r = subprocess.run([sys.executable, "-I", str(gen)], capture_output=True, text=True)
+    if r.returncode != 0:
+        err("tools/gen_buildings.py завершился с ошибкой: " + r.stderr.strip().splitlines()[-1])
+    else:
+        after = {p: p.read_bytes() for p in place.rglob("*.mcfunction")}
+        for p in sorted(set(before) | set(after)):
+            if before.get(p) != after.get(p):
+                err(f"{p.relative_to(ROOT)}: не совпадает с выводом gen_buildings.py (запустите генератор и закоммитьте)")
 
 print(f"функций: {len(fn_ids)}, fake players: {len(mentioned)}, типов зданий: {len(build_types)}")
 for w in warnings:

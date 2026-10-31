@@ -55,6 +55,16 @@ scoreboard players set #hungry fp 0
 scoreboard players set #law_cd fp 0
 scoreboard players set #scout fp 0
 scoreboard players set #scout_men fp 0
+scoreboard players set #vote_t fp 0
+scoreboard players set #vote_pass fp 0
+scoreboard players set #pending_law fp 0
+scoreboard players set #vote_law fp 0
+scoreboard players set #d1 fp 0
+scoreboard players set #d2 fp 0
+scoreboard players set #d3 fp 0
+scoreboard players set #d4 fp 0
+scoreboard players set #d5 fp 0
+scoreboard players set #d6 fp 0
 
 # Здания
 scoreboard players set #n_tent fp 0
@@ -81,6 +91,18 @@ scoreboard players set #law_martial fp 0
 scoreboard players set #law_faith fp 0
 
 tag @a remove fp_captain
+tag @a remove fp_head
+tag @a remove fp_proposer
+tag @a remove fp_d1
+tag @a remove fp_d2
+tag @a remove fp_d3
+tag @a remove fp_d4
+tag @a remove fp_d5
+tag @a remove fp_d6
+scoreboard players set @a fp_frost 0
+scoreboard players set @a fp_heat 0
+scoreboard players set @a fp_fst 0
+scoreboard players set @a fp_hst 0
 tag @s add fp_captain
 execute rotated ~ 0 positioned ^ ^ ^8 align xyz positioned ~0.5 ~ ~0.5 run function frostpunk:build/place/generator
 

@@ -1,0 +1,2 @@
+# Макрос. Аргумент: name
+$tellraw @a [{"text":"🗳 Законопроект «","color":"gold"},{"text":"$(name)","color":"yellow","bold":true},{"text":"» вынесен на голосование глав районов (60 с). ","color":"gold"},{"text":"[ЗА]","color":"green","bold":true,"click_event":{"action":"run_command","command":"/trigger fp_menu set 80"}},{"text":" "},{"text":"[ПРОТИВ]","color":"red","bold":true,"click_event":{"action":"run_command","command":"/trigger fp_menu set 81"}}]

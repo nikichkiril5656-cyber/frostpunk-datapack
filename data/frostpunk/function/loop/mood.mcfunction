@@ -14,6 +14,9 @@ scoreboard players operation #t fp *= #c2 fp
 execute if score #law_martial fp matches 1 run scoreboard players operation #t fp += #n_guard fp
 scoreboard players operation #t fp *= #eff fp
 scoreboard players operation #t fp /= #c100 fp
+# Район порядка (глава на посту): караульные +25%
+execute if score #d5 fp matches 1 run scoreboard players operation #t fp *= #c125 fp
+execute if score #d5 fp matches 1 run scoreboard players operation #t fp /= #c100 fp
 scoreboard players operation #disc fp -= #t fp
 
 # Молельные дома дают надежду (учение веры усиливает)
@@ -21,6 +24,9 @@ scoreboard players operation #t fp = #n_prayer fp
 execute if score #law_faith fp matches 1 run scoreboard players operation #t fp *= #c2 fp
 scoreboard players operation #t fp *= #eff fp
 scoreboard players operation #t fp /= #c100 fp
+# Духовный район (глава на посту): молельные дома +25%
+execute if score #d6 fp matches 1 run scoreboard players operation #t fp *= #c125 fp
+execute if score #d6 fp matches 1 run scoreboard players operation #t fp /= #c100 fp
 scoreboard players operation #hope fp += #t fp
 
 # В полдень, если всё спокойно, люди немного успокаиваются

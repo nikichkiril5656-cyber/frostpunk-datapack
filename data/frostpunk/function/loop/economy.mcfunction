@@ -40,10 +40,19 @@ execute if score #jobs fp > #workers fp run scoreboard players operation #eff fp
 execute if score #jobs fp > #workers fp run scoreboard players operation #eff fp /= #jobs fp
 
 # ---------- Производство (множитель #mult даёт закон о сменах) ----------
+scoreboard players operation #mult0 fp = #mult fp
+# Продовольственный район (глава на посту): еды +15%
+execute if score #d4 fp matches 1 run scoreboard players operation #mult fp *= #c115 fp
+execute if score #d4 fp matches 1 run scoreboard players operation #mult fp /= #c100 fp
 function frostpunk:loop/prod {n:"#n_hunter",res:"#food",base:8}
+scoreboard players operation #mult fp = #mult0 fp
+# Промышленный район (глава на посту): добыча +10%
+execute if score #d2 fp matches 1 run scoreboard players operation #mult fp *= #c110 fp
+execute if score #d2 fp matches 1 run scoreboard players operation #mult fp /= #c100 fp
 function frostpunk:loop/prod {n:"#n_mine",res:"#coal",base:9}
 function frostpunk:loop/prod {n:"#n_sawmill",res:"#wood",base:7}
 function frostpunk:loop/prod {n:"#n_foundry",res:"#steel",base:5}
+scoreboard players operation #mult fp = #mult0 fp
 
 # ---------- Еда ----------
 scoreboard players operation #need fp = #pop fp
