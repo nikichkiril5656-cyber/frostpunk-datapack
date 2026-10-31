@@ -1,0 +1,76 @@
+name: build
+
+# Собирает zip датапака, готовый к установке: pack.mcmeta лежит в корне архива.
+#  - любой push в main, PR и ручной запуск: zip доступен как артефакт запуска;
+#  - тег v* (например v1.0.0): zip прикрепляется к GitHub Release.
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # нужно только для создания релиза по тегу
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Проверка датапака
+        run: python3 tools/lint.py
+
+      - name: Версия
+        id: ver
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            V="$GITHUB_REF_NAME"
+          else
+            V="dev-${GITHUB_SHA::7}"
+          fi
+          echo "name=frostpunk-datapack-$V" >> "$GITHUB_OUTPUT"
+
+      - name: Сборка zip
+        run: |
+          mkdir -p dist/pack
+          cp -r pack.mcmeta data dist/pack/
+          cp README.md dist/pack/
+          (cd dist/pack && zip -rqX "../${{ steps.ver.outputs.name }}.zip" .)
+
+      - name: Проверка архива
+        run: |
+          python3 - "dist/${{ steps.ver.outputs.name }}.zip" <<'EOF'
+          import json, sys, zipfile
+          z = zipfile.ZipFile(sys.argv[1])
+          names = z.namelist()
+          assert "pack.mcmeta" in names, "pack.mcmeta должен лежать в корне архива"
+          meta = json.loads(z.read("pack.mcmeta"))["pack"]
+          assert "min_format" in meta and "max_format" in meta, "в pack.mcmeta нет min_format/max_format"
+          for tag in ("data/minecraft/tags/function/load.json", "data/minecraft/tags/function/tick.json"):
+              assert tag in names, f"нет {tag}"
+          fns = [n for n in names if n.startswith("data/frostpunk/function/") and n.endswith(".mcfunction")]
+          bad = [n for n in names if n.startswith(("tools/", ".github/", ".git/"))]
+          assert not bad, f"в архиве лишние файлы: {bad}"
+          print(f"OK: {len(names)} файлов, {len(fns)} функций, формат {meta['min_format']}..{meta['max_format']}")
+          EOF
+
+      # Скачанный артефакт сам является zip, внутри которого pack.mcmeta в корне,
+      # поэтому его тоже можно сразу класть в папку datapacks мира.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.ver.outputs.name }}
+          path: dist/pack
+          if-no-files-found: error
+
+      - name: Релиз
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "dist/${{ steps.ver.outputs.name }}.zip" \
+            --title "$GITHUB_REF_NAME" --generate-notes
