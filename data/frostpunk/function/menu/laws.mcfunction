@@ -1,4 +1,4 @@
-tellraw @s {"text":"══ Книга законов ══","color":"yellow","bold":true}
+tellraw @s {"text":"══ Законопроекты ══","color":"yellow","bold":true}
 tellraw @s [{"text":"Следующий закон можно принять через (часов): ","color":"gray"},{"score":{"name":"#law_cd","objective":"fp"},"color":"white"}]
 tellraw @s {"text":"Питание (один из двух)","color":"gold"}
 tellraw @s [{"text":"[Опилочный суп] ","color":"white","click_event":{"action":"run_command","command":"/trigger fp_menu set 30"},"hover_event":{"action":"show_text","value":"Еды нужно на 20% меньше, но +2 больных в час. Надежда -5"}},{"text":"[Двойные пайки]","color":"white","click_event":{"action":"run_command","command":"/trigger fp_menu set 31"},"hover_event":{"action":"show_text","value":"Едят больше (на 33%), зато надежда +8, недовольство -5"}}]
@@ -10,3 +10,4 @@ tellraw @s [{"text":"[Ампутации] ","color":"white","click_event":{"acti
 tellraw @s {"text":"Порядок (один из двух)","color":"gold"}
 tellraw @s [{"text":"[Мартиальный закон] ","color":"white","click_event":{"action":"run_command","command":"/trigger fp_menu set 38"},"hover_event":{"action":"show_text","value":"Нужна караульная. Караульные работают в 1.5 раза эффективнее, недовольство -10, надежда -5"}},{"text":"[Учение веры]","color":"white","click_event":{"action":"run_command","command":"/trigger fp_menu set 39"},"hover_event":{"action":"show_text","value":"Нужен молельный дом. Молельные дома дают вдвое больше надежды, надежда +10, недовольство +5"}}]
 tellraw @s {"text":"Законы нельзя отменить. Подумайте дважды.","color":"gray","italic":true}
+tellraw @s {"text":"Если в сети есть главы районов (меню → Районы), законопроект идёт на голосование: 60 секунд, большинство голосов, при ничьей решает Капитан.","color":"gray","italic":true}

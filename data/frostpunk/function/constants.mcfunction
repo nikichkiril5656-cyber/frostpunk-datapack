@@ -14,3 +14,9 @@ scoreboard players set #c10000 fp 10000
 scoreboard players set #cm1 fp -1
 scoreboard players set #cm2 fp -2
 scoreboard players set #cm75 fp -75
+scoreboard players set #c20 fp 20
+scoreboard players set #c70 fp 70
+scoreboard players set #c110 fp 110
+scoreboard players set #c115 fp 115
+scoreboard players set #c125 fp 125
+scoreboard players set #c360 fp 360

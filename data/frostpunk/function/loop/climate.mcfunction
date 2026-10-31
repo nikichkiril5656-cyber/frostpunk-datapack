@@ -31,6 +31,9 @@ scoreboard players operation #housing fp += #t fp
 scoreboard players operation #t fp = #n_house fp
 scoreboard players operation #t fp *= #c10 fp
 scoreboard players operation #housing fp += #t fp
+# Жилой район (глава на посту): жилья +10%
+execute if score #d1 fp matches 1 run scoreboard players operation #housing fp *= #c110 fp
+execute if score #d1 fp matches 1 run scoreboard players operation #housing fp /= #c100 fp
 
 # ---------- Заболевания ----------
 scoreboard players set #sick_in fp 0
@@ -53,6 +56,9 @@ scoreboard players operation #heal fp *= #c4 fp
 execute if score #law_radical fp matches 1 run scoreboard players operation #heal fp *= #c2 fp
 scoreboard players operation #heal fp *= #eff fp
 scoreboard players operation #heal fp /= #c100 fp
+# Медицинский район (глава на посту): лечение +25%
+execute if score #d3 fp matches 1 run scoreboard players operation #heal fp *= #c125 fp
+execute if score #d3 fp matches 1 run scoreboard players operation #heal fp /= #c100 fp
 execute if score #city_temp fp matches -15.. run scoreboard players add #heal fp 2
 
 scoreboard players operation #sick fp += #sick_in fp
